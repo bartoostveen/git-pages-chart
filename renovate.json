@@ -1,3 +1,21 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json"
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "helpers:pinGitHubActionDigests"
+  ],
+  "automerge": true,
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    }
+  ],
+  "postUpgradeTasks": {
+    "commands": [
+      "echo 'Updated dependency {{{depName}}}: {{{currentVersion}}} -> {{{newVersion}}}' > changelog.d/{{{branchName}}}.feature.md"
+    ],
+    "fileFilters": ["changelog.d/*"],
+    "executionMode": "branch"
+  }
 }
