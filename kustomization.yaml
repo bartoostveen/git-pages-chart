@@ -1,0 +1,13 @@
+# This is an example kustomization to run this chart, it is also regularly used for testing
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+helmGlobals:
+  chartHome: .
+
+helmCharts:
+  - name: git-pages
+    releaseName: git-pages-release
+    namespace: git-pages
+    valuesInline:
+      replicaCount: 1

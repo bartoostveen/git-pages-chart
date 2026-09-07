@@ -1,0 +1,43 @@
+name: create release dist
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: [gpg, native-x86_64-linux]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 2 # For release note generation
+      - uses: actions/setup-home@a4a889b9c11347ff52afd33bd731618604bbb8b1 # v1
+        with:
+          gpg-privkey: ${{ secrets.GPG_PRIVKEY }}
+          gpg-key-id: ${{ vars.GPG_KEY_ID }}
+      - name: build
+        run: nix build
+      - name: create archive
+        run: |
+          mkdir -p dist/release
+          cp -L --no-preserve all "$(readlink result)" "dist/release/${FORGEJO_REPOSITORY##*/}-${FORGEJO_REF_NAME}.tar.gz"
+          nix run .#get-changelog > dist/CHANGELOG.md
+          echo "Changelogs:"
+          echo
+          cat dist/CHANGELOG.md
+      - name: create release
+        id: release
+        uses: bart/forgejo-release@74bd5d3064257c896a1499ddcf18ac1161189d47 # v2
+        with:
+          direction: upload
+          gpg-private-key: ${{ secrets.GPG_PRIVKEY }}
+          release-notes-file: dist/CHANGELOG.md
+      - name: upload to Helm registry
+        run: |
+          curl --fail-with-body \
+            -X POST \
+            -H "Authorization: token $TOKEN" \
+            --upload-file "$(readlink result)" \
+            "${{ forge.server_url }}/api/packages/${{ github.repository_owner }}/helm/api/charts"
+        env:
+          TOKEN: "${{ secrets.PACKAGE_TOKEN }}"

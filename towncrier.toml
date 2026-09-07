@@ -1,0 +1,4 @@
+[tool.towncrier]
+name = "git-pages-chart"
+directory = "changelog.d"
+filename = "CHANGELOG.md"

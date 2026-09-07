@@ -1,0 +1,16 @@
+{{- if .Values.serviceMonitor.enabled -}}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "git-pages.fullname" . }}
+  labels:
+    {{- include "git-pages.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "git-pages.selectorLabels" . | nindent 4 }}
+  endpoints:
+    - port: metrics
+      interval: {{ .Values.serviceMonitor.interval }}
+      scrapeTimeout: {{ .Values.serviceMonitor.scrapeTimeout }}
+{{- end -}}
