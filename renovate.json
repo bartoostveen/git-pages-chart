@@ -13,7 +13,7 @@
   ],
   "postUpgradeTasks": {
     "commands": [
-      ".forgejo/scripts/generate-changelog.sh '{{{toJSON upgrades}}}'"
+      "bash .forgejo/scripts/generate-changelog.sh '{{{toJSON upgrades}}}'"
     ],
     "fileFilters": ["changelog.d/**"],
     "executionMode": "branch"
