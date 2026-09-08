@@ -13,9 +13,9 @@
   ],
   "postUpgradeTasks": {
     "commands": [
-      "echo 'Updated dependency {{{depName}}}: {{{currentVersion}}} -> {{{newVersion}}}' > changelog.d/{{{branchName}}}.feature.md"
+      ".github/scripts/generate-changelog.sh '{{{toJSON upgrades}}}'"
     ],
-    "fileFilters": ["changelog.d/*"],
+    "fileFilters": ["changelog.d/**"],
     "executionMode": "branch"
   }
 }
