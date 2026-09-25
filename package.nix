@@ -33,7 +33,6 @@ stdenv.mkDerivation {
     homepage = "https://git.bartoostveen.nl/bart/git-pages-chart.git";
     license = lib.licenses.mit;
     maintainers = with lib.maintainers; [ bartoostveen ];
-    mainProgram = "uptimekuma-matrix";
     platforms = lib.platforms.all;
   };
 }
