@@ -44,6 +44,13 @@
             ''
             |> builtins.readFile
             |> trim;
+
+          appVersion =
+            pkgs.runCommand "git-pages-app-version" { } ''
+              ${getExe pkgs.yq} -r '.appVersion' ${./git-pages/Chart.yaml} > $out
+            ''
+            |> builtins.readFile
+            |> trim;
         in
         {
           treefmt = {
@@ -73,6 +80,11 @@
               ${getExe pkgs.kubernetes-helm} install --dry-run=client --debug test-release ${./git-pages} > $out
             '';
             e2e = pkgs.callPackage ./vm-test.nix { };
+            version =
+              if pkgs.git-pages.version != appVersion then
+                throw "git-pages version in nixpkgs does not equal the app version!"
+              else
+                self'.checks.e2e;
           };
 
           packages = {
