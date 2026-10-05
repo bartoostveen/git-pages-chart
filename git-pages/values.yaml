@@ -212,6 +212,10 @@ volumeMounts: []
   #   mountPath: "/etc/foo"
   #   readOnly: true
 
+# Deployment strategy with a better sensible default for a service with shared storage
+strategy:
+  type: Recreate
+
 nodeSelector: {}
 
 tolerations: []
