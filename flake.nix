@@ -29,6 +29,7 @@
           self',
           pkgs,
           lib,
+          system,
           ...
         }:
 
@@ -53,6 +54,27 @@
             |> trim;
         in
         {
+          _module.args.pkgs = import inputs.nixpkgs {
+            inherit system;
+            overlays = [
+              (final: prev: {
+                git-pages =
+                  assert prev.git-pages.version == "0.9.1";
+                  prev.git-pages.overrideAttrs rec {
+                    version = "0.10.1";
+                    src = final.fetchFromCodeberg {
+                      owner = "git-pages";
+                      repo = "git-pages";
+                      tag = "v${version}";
+                      hash = "sha256-8FWb7cXCyx7Rt+UetmyNo3TTiF778JxlHGWyLpcUBfI=";
+                    };
+                    patches = [ ];
+                    vendorHash = "sha256-Q6uFwlFP7p/Nh88Fever0QDG9/YXO3r6dkGcgKr+35E=";
+                  };
+              })
+            ];
+          };
+
           treefmt = {
             programs.nixfmt.enable = true;
             programs.statix.enable = true;
@@ -81,8 +103,13 @@
             '';
             e2e = pkgs.callPackage ./vm-test.nix { };
             version =
-              if pkgs.git-pages.version != appVersion then
-                throw "git-pages version in nixpkgs does not equal the app version!"
+              let
+                compared = builtins.compareVersions pkgs.git-pages.version appVersion;
+              in
+              if compared == 1 then
+                throw "git-pages version in nixpkgs is newer than the app version!"
+              else if compared == -1 then
+                builtins.warn "git-pages version in nixpkgs is older than the app version" self'.checks.e2e
               else
                 self'.checks.e2e;
           };

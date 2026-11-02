@@ -11,7 +11,7 @@ gitPages:
     [server]
     # Use "-" to disable the handler.
     pages = "tcp/0.0.0.0:3000"
-    caddy = "-"
+    proxy = "-"
     metrics = "tcp/0.0.0.0:3002"
 
     [[wildcard]] # non-default section
@@ -44,6 +44,7 @@ gitPages:
     allowed-repository-url-prefixes = []
     allowed-custom-headers = ["X-Clacks-Overhead"]
     allow-basic-auth = false
+    allow-expiration = false
 
     [audit]
     node-id = 0
