@@ -123,7 +123,7 @@
               runtimeInputs = [ pkgs.python314Packages.towncrier ];
               text = ''
                 version=$(nix eval --raw .#default.version)
-                towncrier build --version "$version" --yes "$@"
+                towncrier build --version "$version" --yes --date "$(date +%Y-%m-%d)" "$@"
               '';
             };
             get-changelog = pkgs.writeShellApplication {
