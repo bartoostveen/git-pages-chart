@@ -4,3 +4,4 @@ description: A Helm chart to run git-pages on Kubernetes
 type: application
 version: 1.2.0
 appVersion: "0.10.1"
+icon: https://codeberg.org/git-pages/website/raw/branch/main/docs/assets/logo.svg
