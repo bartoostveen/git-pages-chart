@@ -2,7 +2,7 @@
 
 <!-- towncrier release notes start -->
 
-# git-pages-chart 1.2.0 (1980-01-01)
+# git-pages-chart 1.2.0 (2026-11-02)
 
 ## Features
 
