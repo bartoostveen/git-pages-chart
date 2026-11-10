@@ -147,7 +147,7 @@
                 version=$(nix eval --raw .#default.version)
                 git add .
                 git commit -m "chore: Release $version"
-                git tag "v$version" -m "Release $version"
+                git tag "v$version" -m "Release $version" "$@"
                 git show
               '';
             };
