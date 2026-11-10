@@ -2,6 +2,11 @@
 
 <!-- towncrier release notes start -->
 
+# git-pages-chart 1.2.1 (2026-11-10)
+
+No significant changes.
+
+
 # git-pages-chart 1.2.0 (2026-11-02)
 
 ## Features
